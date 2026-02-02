@@ -1,0 +1,129 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  // Relations
+  projects      Project[]
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  expiresAt             DateTime?
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Project {
+  id         String     @id @default(cuid())
+  name       String
+  projectKey String     @unique @default(uuid())
+  createdAt  DateTime   @default(now())
+  userId     String
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feedbacks  Feedback[]
+
+  @@index([userId])
+}
+
+enum FeedbackType {
+  BUG
+  FEATURE
+  OTHER
+}
+
+enum Sentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+model Feedback {
+  id        String       @id @default(cuid())
+  content   String       @db.Text
+  type      FeedbackType @default(OTHER)
+  sentiment Sentiment? // Managed by the "Analyze Sentiment" button logic
+  createdAt DateTime     @default(now())
+
+  userEmail String? // Email of the person who submitted feedback
+  pageUrl   String? // URL where the feedback was submitted from
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  labels    Label[]
+
+  @@index([projectId])
+}
+
+model Label {
+  id         String   @id @default(cuid())
+  name       String
+  color      String   @default("#3b82f6") // Default Tailwind Blue
+  feedbackId String
+  feedback   Feedback @relation(fields: [feedbackId], references: [id], onDelete: Cascade)
+
+  @@index([feedbackId])
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
