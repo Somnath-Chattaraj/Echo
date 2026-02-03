@@ -22,27 +22,50 @@ export function LandingFeatures() {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {/* Card 1: Integration (Span 2 cols) */}
-                    <Card className="md:col-span-2 bg-zinc-900/50 border-zinc-800 p-6 overflow-hidden hover:bg-zinc-900/80 transition-colors group">
-                        <div className="flex flex-col h-full justify-between">
-                            <div className="mb-6">
-                                <div className="p-3 bg-zinc-800/50 w-fit rounded-lg mb-4 text-white">
-                                    <Code className="w-5 h-5" />
+                    <Card className="md:col-span-2 bg-zinc-900/50 border-zinc-800 p-8 overflow-hidden hover:bg-zinc-900/80 transition-all group relative">
+                        {/* Background Glow for "Lively" feel */}
+                        <div className="absolute -right-10 -top-10 w-32 h-32 bg-primary/10 blur-[80px] rounded-full group-hover:bg-primary/20 transition-colors" />
+
+                        <div className="flex flex-col md:flex-row gap-8 items-center h-full">
+                            {/* Left Side: Content */}
+                            <div className="flex-1 space-y-4">
+                                <div className="p-3 bg-zinc-800/50 w-fit rounded-xl text-primary shadow-inner">
+                                    <Code className="w-6 h-6" />
                                 </div>
-                                <h3 className="text-xl font-semibold text-white mb-2">One script. Infinite insights.</h3>
-                                <p className="text-zinc-400">Copy, paste, and start collecting feedback in under 30 seconds.</p>
+                                <div>
+                                    <h3 className="text-2xl font-bold text-white tracking-tight">One script. Infinite insights.</h3>
+                                    <p className="text-zinc-400 leading-relaxed max-w-sm">
+                                        Copy and paste this snippet into your site's header to start receiving echoes from your users.
+                                    </p>
+                                </div>
                             </div>
 
-                            {/* Code Snippet */}
-                            <div className="relative rounded-lg bg-zinc-950 border border-zinc-800 p-4 font-mono text-xs md:text-sm text-zinc-300 overflow-x-auto">
-                                <span className="text-purple-400">import</span> {"{"} Echo {"}"} <span className="text-purple-400">from</span> <span className="text-green-400">'echo-widget'</span>;
-                                <br /><br />
-                                <span className="text-blue-400">{"<Echo"}</span>
-                                <br />
-                                &nbsp;&nbsp;<span className="text-orange-300">projectId</span>=<span className="text-green-400">"echo-demo-key"</span>
-                                <br />
-                                &nbsp;&nbsp;<span className="text-orange-300">theme</span>=<span className="text-green-400">"dark"</span>
-                                <br />
-                                <span className="text-blue-400">{"/>"}</span>
+                            {/* Right Side: Code Snippet (The "Hero" of the card) */}
+                            <div className="w-full md:w-[60%] relative">
+                                <div className="relative rounded-xl bg-black/40 border border-white/5 p-4 backdrop-blur-sm shadow-2xl">
+                                    {/* Visual Window Controls */}
+                                    <div className="flex gap-1.5 mb-3">
+                                        <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                                        <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                                        <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+                                    </div>
+
+                                    <div className="overflow-hidden">
+                                        <code className="block overflow-x-auto text-[11px] md:text-xs font-mono whitespace-nowrap scrollbar-hide py-1">
+                                            <span className="text-zinc-500">&lt;</span>
+                                            <span className="text-blue-400">script</span>
+                                            <span className="ml-2 text-purple-400">src</span>
+                                            <span className="text-zinc-500">=</span>
+                                            <span className="text-green-400">"{process.env.NEXT_PUBLIC_BASE_URL}/embed/7a9a..."</span>
+                                            <span className="text-zinc-500">&gt;&lt;/</span>
+                                            <span className="text-blue-400">script</span>
+                                            <span className="text-zinc-500">&gt;</span>
+                                        </code>
+                                    </div>
+
+                                    {/* Horizontal Fade to prevent visual overflow */}
+                                    <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-black/40 to-transparent pointer-events-none rounded-r-xl" />
+                                </div>
                             </div>
                         </div>
                     </Card>
