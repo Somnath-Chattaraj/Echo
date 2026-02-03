@@ -20,11 +20,24 @@ interface ProjectCardProps {
 }
 
 export function ProjectCard({ project }: ProjectCardProps) {
+    const hasRecentFeedback = project.feedbacks.some(f => {
+        const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000)
+        return new Date(f.createdAt) > twentyFourHoursAgo
+    })
+
     return (
-        <Card className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/50 group bg-card/50 backdrop-blur-sm border-muted/60">
+        <Card className="flex flex-col overflow-hidden transition-all duration-300 hover:shadow-lg hover:border-primary/50 group bg-card/50 backdrop-blur-sm border-muted/60 relative">
             <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
-                    <CardTitle className="truncate text-xl font-bold tracking-tight">{project.name}</CardTitle>
+                    <CardTitle className="truncate text-xl font-bold tracking-tight flex items-center gap-2">
+                        {project.name}
+                        {hasRecentFeedback && (
+                            <span className="relative flex h-2.5 w-2.5">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-green-500"></span>
+                            </span>
+                        )}
+                    </CardTitle>
                     <div className="rounded-full bg-primary/10 p-2 text-primary">
                         <MessageSquareText className="h-4 w-4" />
                     </div>

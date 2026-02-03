@@ -34,3 +34,24 @@ export async function getAllfeedback() {
 
     return project;
 }
+
+export async function getProjectFeedback(projectId: string) {
+    const session = await getSession();
+    if (!session?.user) {
+        throw new Error("Unauthorized");
+    }
+
+    const project = await prisma.project.findUnique({
+        where: {
+            id: projectId,
+            user: {
+                id: session.user.id,
+            },
+        },
+        select: {
+            projectKey: true,
+        }
+    });
+
+    return project?.projectKey;
+}

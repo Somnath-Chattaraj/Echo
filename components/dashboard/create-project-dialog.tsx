@@ -78,25 +78,43 @@ export function CreateProjectDialog({ trigger }: { trigger?: React.ReactNode }) 
 
                 {projectKey ? (
                     <div className="grid gap-4 py-4">
-                        <div className="flex items-center gap-2 rounded-md bg-muted p-4">
-                            <code className="flex-1 overflow-auto text-sm text-muted-foreground whitespace-nowrap">
-                                {`<script src="${typeof window !== 'undefined' ? window.location.origin : ''}/embed/${projectKey}"></script>`}
-                            </code>
-                            <Button
-                                size="icon"
-                                variant="ghost"
-                                onClick={handleCopy}
-                                className="h-8 w-8 shrink-0"
-                            >
-                                {copied ? (
-                                    <Check className="h-4 w-4 text-green-500" />
-                                ) : (
-                                    <Copy className="h-4 w-4" />
-                                )}
-                            </Button>
+                        <div className="relative group min-w-0">
+                            <div className="flex items-center gap-3 rounded-lg border border-zinc-800 bg-zinc-950 p-3 pr-12 transition-all hover:border-zinc-700">
+                                {/* The Code Container */}
+                                <div className="flex-1 min-w-0">
+                                    <div className="overflow-x-auto scrollbar-hide">
+                                        <code className="block text-xs  font-mono text-zinc-100 whitespace-nowrap py-1">
+                                            {`<script src="${typeof window !== 'undefined' ? window.location.origin : ''}/embed/${projectKey}"></script>`}
+                                        </code>
+                                    </div>
+                                </div>
+
+                                {/* The Floating Copy Button */}
+                                <Button
+                                    size="icon"
+                                    variant="secondary"
+                                    onClick={handleCopy}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 shrink-0 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 shadow-sm"
+                                >
+                                    {copied ? (
+                                        <Check className="h-4 w-4 text-emerald-500" />
+                                    ) : (
+                                        <Copy className="h-4 w-4" />
+                                    )}
+                                </Button>
+                            </div>
+
+                            {/* Elegant Gradient Fade to indicate more text */}
+                            <div className="absolute right-10 top-1 bottom-1 w-8 bg-gradient-to-r from-transparent to-zinc-950 pointer-events-none rounded-r-lg" />
                         </div>
-                        <DialogFooter>
-                            <Button onClick={reset}>Done</Button>
+
+                        <DialogFooter className="sm:justify-end">
+                            <Button
+                                onClick={reset}
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
+                            >
+                                Done
+                            </Button>
                         </DialogFooter>
                     </div>
                 ) : (

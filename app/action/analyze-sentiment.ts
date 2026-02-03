@@ -4,10 +4,10 @@ import { auth } from "@/lib/auth"
 import prisma from "@/lib/db"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
-// @ts-ignore
-import { SentimentAnalyzer } from 'node-nlp';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const analyzer = new SentimentAnalyzer({ language: 'en' });
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
+const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
 export async function analyzeSentiment(feedbackId: string) {
     const session = await auth.api.getSession({
@@ -25,16 +25,29 @@ export async function analyzeSentiment(feedbackId: string) {
 
     if (!feedback) throw new Error("Feedback not found")
 
-    const result = await analyzer.getSentiment(feedback.content);
-    let sentiment: "POSITIVE" | "NEGATIVE" | "NEUTRAL" = "NEUTRAL";
+    try {
+        const prompt = `Analyze the sentiment of the following text and categorize it as exactly one of: POSITIVE, NEUTRAL, or NEGATIVE.
+        
+        Text: "${feedback.content}"
+        
+        Sentiment:`;
 
-    if (result.score > 0.3) sentiment = "POSITIVE";
-    else if (result.score < -0.3) sentiment = "NEGATIVE";
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text().trim().toUpperCase();
 
-    await prisma.feedback.update({
-        where: { id: feedbackId },
-        data: { sentiment }
-    })
+        let sentiment: "POSITIVE" | "NEGATIVE" | "NEUTRAL" = "NEUTRAL";
+        if (text.includes("POSITIVE")) sentiment = "POSITIVE";
+        else if (text.includes("NEGATIVE")) sentiment = "NEGATIVE";
 
-    return sentiment
+        await prisma.feedback.update({
+            where: { id: feedbackId },
+            data: { sentiment }
+        })
+
+        return sentiment
+    } catch (error) {
+        console.error("Gemini analysis failed:", error)
+        return "NEUTRAL"
+    }
 }

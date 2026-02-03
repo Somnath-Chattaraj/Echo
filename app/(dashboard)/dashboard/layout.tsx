@@ -1,13 +1,10 @@
-import { AppSidebar } from "@/components/dashboard/app-sidebar"
-import {
-    SidebarInset,
-    SidebarProvider,
-    SidebarTrigger,
-} from "@/components/ui/sidebar"
-import { Separator } from "@/components/ui/separator"
+import { Navbar } from "@/components/dashboard/navbar"
+import { AntiGravityBackground } from "@/components/ui/anti-gravity-background"
 import { getAllfeedback } from "@/app/action/feedback"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
+import prisma from "@/lib/db"
+import { BGPattern } from "@/components/ui/bg-pattern"
 
 export default async function DashboardLayout({
     children,
@@ -18,28 +15,29 @@ export default async function DashboardLayout({
     const session = await auth.api.getSession({
         headers: await headers(),
     })
+    if (!session?.user) {
+        window.location.href = "/login"
+    }
+    const dbUser = session?.user?.id ? await prisma.user.findUnique({
+        where: {
+            id: session.user.id
+        }
+    }) : null
 
     const user = {
         name: session?.user?.name || "User",
         email: session?.user?.email || "user@example.com",
-        avatar: session?.user?.image || "",
+        avatar: dbUser?.image || session?.user?.image || "",
     }
 
     return (
-        <SidebarProvider className="dark w-full min-h-screen">
-            <AppSidebar projects={projects} user={user} />
-            <SidebarInset>
-                <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
-                    <div className="flex items-center gap-2 px-4">
-                        <SidebarTrigger className="-ml-1" />
-                        <Separator orientation="vertical" className="mr-2 h-4" />
-                        {/* Breadcrumbs could go here */}
-                    </div>
-                </header>
-                <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-                    {children}
-                </div>
-            </SidebarInset>
-        </SidebarProvider>
+        <div className="min-h-screen w-full relative dark">
+            <AntiGravityBackground />
+            <BGPattern variant="grid" mask="fade-edges" />
+            <Navbar projects={projects} user={user} />
+            <main className="flex-1 space-y-4 p-8 pt-6">
+                {children}
+            </main>
+        </div>
     )
 }

@@ -42,7 +42,8 @@ export function FeedbackTable({ projectId }: FeedbackTableProps) {
         queryKey: ["feedbacks", projectId, filter, page],
         queryFn: async () => {
             const res = await fetch(
-                `/api/feedback?projectId=${projectId}&type=${filter}&page=${page}`
+                `/api/feedback?projectId=${projectId}&type=${filter}&page=${page}`,
+                { cache: "no-store" }
             )
             if (!res.ok) throw new Error("Failed to fetch feedback")
             return res.json() as Promise<{ feedbacks: Feedback[]; hasMore: boolean }>
@@ -74,22 +75,22 @@ export function FeedbackTable({ projectId }: FeedbackTableProps) {
                 </Tabs>
             </div>
 
-            <div className="rounded-xl border bg-card shadow-sm overflow-hidden">
+            <div className="rounded-xl border bg-card/60 backdrop-blur-sm shadow-sm overflow-hidden border-muted/40">
                 <Table>
-                    <TableHeader className="bg-muted/40">
-                        <TableRow className="hover:bg-transparent border-b border-border/50">
+                    <TableHeader className="bg-muted/20">
+                        <TableRow className="hover:bg-transparent border-b border-border/30">
                             <TableHead className="w-[100px] pl-6 font-semibold">Type</TableHead>
                             <TableHead className="font-semibold">Feedback Content</TableHead>
-                            <TableHead className="w-[200px] font-semibold">User</TableHead>
-                            <TableHead className="w-[150px] font-semibold">Sentiment</TableHead>
-                            <TableHead className="w-[200px] font-semibold">Labels</TableHead>
-                            <TableHead className="w-[150px] font-semibold text-right pr-6">Date</TableHead>
+                            <TableHead className="w-[120px] font-semibold">Sentiment</TableHead>
+                            {/* 1. Added text-center here */}
+                            <TableHead className="w-[150px] font-semibold text-center">Date</TableHead>
+                            <TableHead className="w-[200px] font-semibold text-right pr-6">Labels</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {isLoading ? (
                             <TableRow>
-                                <TableCell colSpan={6} className="h-32 text-center">
+                                <TableCell colSpan={5} className="h-32 text-center">
                                     <div className="flex flex-col items-center justify-center gap-2">
                                         <Loader2 className="h-8 w-8 animate-spin text-primary" />
                                         <span className="text-sm text-muted-foreground">Loading feedback...</span>
@@ -98,7 +99,7 @@ export function FeedbackTable({ projectId }: FeedbackTableProps) {
                             </TableRow>
                         ) : data?.feedbacks.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={6} className="h-64 text-center">
+                                <TableCell colSpan={5} className="h-64 text-center">
                                     <div className="flex flex-col items-center justify-center gap-4 text-muted-foreground">
                                         <div className="rounded-full bg-muted p-4">
                                             <MessageCircle className="h-8 w-8 opacity-50" />
@@ -109,15 +110,15 @@ export function FeedbackTable({ projectId }: FeedbackTableProps) {
                             </TableRow>
                         ) : (
                             data?.feedbacks.map((item) => (
-                                <TableRow key={item.id} className="group hover:bg-muted/30 transition-colors border-b border-border/40 last:border-0">
+                                <TableRow key={item.id} className="group hover:bg-muted/30 transition-colors border-b border-border/20 last:border-0">
                                     <TableCell className="pl-6 align-top py-4">
                                         <Badge
                                             variant="outline"
                                             className={cn(
-                                                "capitalize shadow-sm",
-                                                item.type === "BUG" && "border-red-200 bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900",
-                                                item.type === "FEATURE" && "border-blue-200 bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-900",
-                                                item.type === "OTHER" && "border-gray-200 bg-gray-50 text-gray-700 dark:bg-gray-800/30 dark:text-gray-400 dark:border-gray-800"
+                                                "capitalize shadow-none border-0 font-medium",
+                                                item.type === "BUG" && "bg-red-500/10 text-red-500",
+                                                item.type === "FEATURE" && "bg-blue-500/10 text-blue-500",
+                                                item.type === "OTHER" && "bg-gray-500/10 text-gray-500"
                                             )}
                                         >
                                             {item.type.toLowerCase()}
@@ -128,44 +129,39 @@ export function FeedbackTable({ projectId }: FeedbackTableProps) {
                                             {item.content}
                                         </p>
                                     </TableCell>
-                                    <TableCell className="align-top py-4">
-                                        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                            <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10">
-                                                <User className="h-3 w-3 text-primary" />
-                                            </div>
-                                            <span className="truncate max-w-[140px]">{item.userEmail || "Anonymous"}</span>
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="align-top py-4">
+                                    <TableCell className="align-top py-4 text-muted-foreground">
                                         {item.sentiment === "POSITIVE" && (
-                                            <Badge variant="outline" className="border-green-200 bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400 dark:border-green-900">Positive</Badge>
+                                            <Badge variant="outline" className="bg-green-500/10 text-green-500 border-0">Positive</Badge>
                                         )}
                                         {item.sentiment === "NEUTRAL" && (
-                                            <Badge variant="outline" className="border-yellow-200 bg-yellow-50 text-yellow-700 dark:bg-yellow-950/30 dark:text-yellow-400 dark:border-yellow-900">Neutral</Badge>
+                                            <Badge variant="outline" className="bg-yellow-500/10 text-yellow-500 border-0">Neutral</Badge>
                                         )}
                                         {item.sentiment === "NEGATIVE" && (
-                                            <Badge variant="outline" className="border-red-200 bg-red-50 text-red-700 dark:bg-red-950/30 dark:text-red-400 dark:border-red-900">Negative</Badge>
+                                            <Badge variant="outline" className="bg-red-500/10 text-red-500 border-0">Negative</Badge>
                                         )}
                                         {!item.sentiment && (
-                                            <div className="flex items-center gap-2">
-                                                <AnalyzeButton feedbackId={item.id} projectId={projectId} />
-                                            </div>
+                                            <AnalyzeButton feedbackId={item.id} projectId={projectId} />
                                         )}
                                     </TableCell>
-                                    <TableCell className="align-top py-4">
-                                        <div className="flex flex-wrap items-center gap-1.5">
-                                            {item.labels && item.labels.map(label => (
-                                                <Badge key={label.id} variant="secondary" className="bg-muted/50 hover:bg-muted text-[10px] h-5 px-1.5 font-normal border-transparent">
+
+                                    {/* 2. DATE COLUMN: Now Centered */}
+                                    <TableCell className="align-top py-4 text-center">
+                                        <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground font-medium">
+                                            <Calendar className="h-3 w-3" />
+                                            {new Date(item.createdAt).toLocaleDateString(undefined, {
+                                                month: 'short',
+                                                day: 'numeric'
+                                            })}
+                                        </div>
+                                    </TableCell>
+                                    <TableCell className="text-right align-top py-4 pr-6">
+                                        <div className="flex flex-wrap items-center justify-end gap-1.5">
+                                            {item.labels?.map(label => (
+                                                <Badge key={label.id} variant="secondary" className="bg-muted/50 text-[10px] h-5 px-1.5 font-normal">
                                                     {label.name}
                                                 </Badge>
                                             ))}
                                             <AddLabelPopover feedbackId={item.id} projectId={projectId} existingLabels={item.labels} />
-                                        </div>
-                                    </TableCell>
-                                    <TableCell className="text-right align-top py-4 pr-6">
-                                        <div className="flex items-center justifyContent-end gap-1.5 text-xs text-muted-foreground">
-                                            <Calendar className="h-3 w-3" />
-                                            {new Date(item.createdAt).toLocaleDateString()}
                                         </div>
                                     </TableCell>
                                 </TableRow>

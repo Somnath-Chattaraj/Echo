@@ -6,9 +6,25 @@ import { Button } from "@/components/ui/button"
 
 export default async function DashboardPage() {
     const projects = await getAllfeedback()
+    const totalProjects = projects.length
+    const totalFeedback = projects.reduce((acc, project) => acc + project.feedbacks.length, 0)
 
     return (
         <div className="flex flex-1 flex-col gap-8 p-8">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                <div className="rounded-xl border bg-card/50 text-card-foreground shadow-sm backdrop-blur-sm p-6">
+                    <div className="flex flex-col space-y-1.5">
+                        <span className="text-sm font-medium text-muted-foreground">Total Projects</span>
+                        <span className="text-2xl font-bold">{totalProjects}</span>
+                    </div>
+                </div>
+                <div className="rounded-xl border bg-card/50 text-card-foreground shadow-sm backdrop-blur-sm p-6">
+                    <div className="flex flex-col space-y-1.5">
+                        <span className="text-sm font-medium text-muted-foreground">Total Feedback</span>
+                        <span className="text-2xl font-bold">{totalFeedback}</span>
+                    </div>
+                </div>
+            </div>
             <div className="flex items-center justify-between">
                 <div className="space-y-1">
                     <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
@@ -20,6 +36,8 @@ export default async function DashboardPage() {
                 </div>
                 <CreateProjectDialog />
             </div>
+
+
 
             {projects.length === 0 ? (
                 <div className="flex flex-1 flex-col items-center justify-center gap-6 rounded-3xl border border-dashed border-border/50 bg-muted/20 p-12 text-center animate-in fade-in-50 duration-500">
@@ -46,7 +64,7 @@ export default async function DashboardPage() {
                             <Plus className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
                         <div className="text-center">
-                            <h3 className="font-semibold">Create New Project</h3>
+                            <h3 className="font-semibold text-foreground">Create New Project</h3>
                             <p className="text-sm text-muted-foreground">Add another project to your workspace</p>
                         </div>
                         <div className="absolute inset-0 z-10">
