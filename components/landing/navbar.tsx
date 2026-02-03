@@ -16,17 +16,6 @@ export function LandingNavbar() {
                     <span className="font-bold text-lg tracking-tight text-white">Echo</span>
                 </Link>
 
-                {/* Right Actions */}
-                <div className="flex items-center gap-4">
-                    <Link href="/sign-in" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
-                        Log in
-                    </Link>
-                    <Link href="/sign-up">
-                        <Button className="h-9 rounded-full bg-white text-zinc-950 hover:bg-zinc-200 border-none font-semibold shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)]">
-                            Sign up
-                        </Button>
-                    </Link>
-                </div>
             </div>
         </nav>
     )

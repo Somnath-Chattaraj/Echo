@@ -11,7 +11,7 @@ import { getProjectFeedback } from "@/app/action/feedback"
 
 const queryClient = new QueryClient()
 
-export default async function ProjectFeedbackPage() {
+export default function ProjectFeedbackPage() {
     const params = useParams()
     const projectId = params.projectId as string
     const [projectKey, setProjectKey] = useState("")
