@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import prisma from "@/lib/db"
 import { BGPattern } from "@/components/ui/bg-pattern"
+import { redirect } from "next/navigation"
 
 export default async function DashboardLayout({
     children,
@@ -16,7 +17,7 @@ export default async function DashboardLayout({
         headers: await headers(),
     })
     if (!session?.user) {
-        window.location.href = "/login"
+        redirect('/sign-in');
     }
     const dbUser = session?.user?.id ? await prisma.user.findUnique({
         where: {

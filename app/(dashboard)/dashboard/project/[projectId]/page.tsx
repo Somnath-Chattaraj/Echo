@@ -2,7 +2,7 @@
 
 import { FeedbackTable } from "@/components/feedback/feedback-table"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { useParams } from "next/navigation"
+import { redirect, useParams } from "next/navigation"
 import { Link, Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import NextLink from "next/link"
@@ -11,7 +11,7 @@ import { getProjectFeedback } from "@/app/action/feedback"
 
 const queryClient = new QueryClient()
 
-export default function ProjectFeedbackPage() {
+export default async function ProjectFeedbackPage() {
     const params = useParams()
     const projectId = params.projectId as string
     const [projectKey, setProjectKey] = useState("")

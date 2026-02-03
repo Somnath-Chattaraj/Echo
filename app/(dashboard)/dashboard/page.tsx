@@ -3,6 +3,8 @@ import { CreateProjectDialog } from "@/components/dashboard/create-project-dialo
 import { ProjectCard } from "@/components/dashboard/project-card"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { authClient } from "@/lib/auth-client"
+import { redirect } from "next/navigation"
 
 export default async function DashboardPage() {
     const projects = await getAllfeedback()

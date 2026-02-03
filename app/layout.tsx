@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Echo - Feedback Management System",
+  title: "Echo - Listen to every echo of your users",
   description: "Feedback Management System",
 };
 

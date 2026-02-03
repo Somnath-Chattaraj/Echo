@@ -5,6 +5,7 @@ import prisma from "@/lib/db"
 import { headers } from "next/headers"
 import { revalidatePath } from "next/cache"
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { redirect } from "next/navigation"
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || "");
 const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
@@ -15,7 +16,7 @@ export async function analyzeSentiment(feedbackId: string) {
     })
 
     if (!session?.user) {
-        throw new Error("Unauthorized")
+        redirect('/sign-in');
     }
 
     const feedback = await prisma.feedback.findUnique({

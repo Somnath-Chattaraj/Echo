@@ -3,6 +3,7 @@
 import { auth } from "@/lib/auth"
 import prisma from "@/lib/db";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 async function getSession() {
     const session = await auth.api.getSession({
@@ -14,7 +15,7 @@ async function getSession() {
 export async function getAllfeedback() {
     const session = await getSession();
     if (!session?.user) {
-        throw new Error("Unauthorized");
+        redirect('/sign-in');
     }
 
     const project = await prisma.project.findMany({

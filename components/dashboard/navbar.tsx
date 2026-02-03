@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { authClient } from "@/lib/auth-client"
 // import { signOut } from "@/lib/auth-client"
 
 interface Project {
@@ -43,6 +44,13 @@ export function Navbar({ projects, user }: NavbarProps) {
 
     const handleSignOut = async () => {
         console.log("Signing out...")
+        await authClient.signOut({
+            fetchOptions: {
+                onSuccess: () => {
+                    router.push("/sign-in"); // redirect to login page
+                },
+            },
+        });
     }
 
     return (
