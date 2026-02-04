@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { CreateProjectDialog } from "@/components/dashboard/create-project-dialog"
 import { LayoutGrid, Inbox, ChevronDown, LogOut, Box, Plus, Settings } from "lucide-react"
 import {
     DropdownMenu,
@@ -102,10 +103,21 @@ export function Navbar({ projects, user }: NavbarProps) {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => router.push('/dashboard')} className="gap-2">
                                 <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                                    <Plus className="size-3" />
+                                    <LayoutGrid className="size-3" />
                                 </div>
                                 <span>All Projects</span>
                             </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <div className="p-1">
+                                <CreateProjectDialog trigger={
+                                    <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="gap-2 w-full cursor-pointer bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary focus:bg-primary/20 focus:text-primary">
+                                        <div className="flex size-6 items-center justify-center rounded-md border border-primary/20 bg-primary/10">
+                                            <Plus className="size-3" />
+                                        </div>
+                                        <span>Create Project</span>
+                                    </DropdownMenuItem>
+                                } />
+                            </div>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

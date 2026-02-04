@@ -1,7 +1,8 @@
 "use client"
 
 import * as React from "react"
-import { ChevronsUpDown, Plus, Box } from "lucide-react"
+import { ChevronsUpDown, Plus, Box, LayoutGrid } from "lucide-react"
+import { CreateProjectDialog } from "@/components/dashboard/create-project-dialog"
 import { useRouter, useParams } from "next/navigation"
 
 import {
@@ -90,10 +91,21 @@ export function ProjectSwitcher({
                         <DropdownMenuSeparator className="bg-border/50" />
                         <DropdownMenuItem className="gap-2 p-2 cursor-pointer text-muted-foreground hover:text-foreground focus:bg-accent/50" onClick={() => router.push('/dashboard')}>
                             <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                                <Plus className="size-4" />
+                                <LayoutGrid className="size-4" />
                             </div>
                             <div className="font-medium">View All Projects</div>
                         </DropdownMenuItem>
+                        <DropdownMenuSeparator className="bg-border/50" />
+                        <div className="p-1">
+                            <CreateProjectDialog trigger={
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()} className="gap-2 p-2 cursor-pointer bg-primary/10 text-primary hover:bg-primary/20 hover:text-primary focus:bg-primary/20 focus:text-primary">
+                                    <div className="flex size-6 items-center justify-center rounded-md border border-primary/20 bg-primary/10">
+                                        <Plus className="size-4" />
+                                    </div>
+                                    <div className="font-medium">Create Project</div>
+                                </DropdownMenuItem>
+                            } />
+                        </div>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </SidebarMenuItem>

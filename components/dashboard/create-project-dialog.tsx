@@ -53,12 +53,15 @@ export function CreateProjectDialog({ trigger }: { trigger?: React.ReactNode }) 
     }
 
     return (
-        <Dialog open={open} onOpenChange={(val) => !val && reset()}>
+        <Dialog open={open} onOpenChange={(val) => {
+            if (!val) reset();
+            else setOpen(val);
+        }}>
             <DialogTrigger asChild>
                 {trigger ? (
                     trigger
                 ) : (
-                    <Button onClick={() => setOpen(true)}>
+                    <Button>
                         <Plus className="mr-2 h-4 w-4" />
                         Add Project
                     </Button>
