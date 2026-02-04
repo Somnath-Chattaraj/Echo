@@ -125,9 +125,11 @@ export function FeedbackTable({ projectId }: FeedbackTableProps) {
                                         </Badge>
                                     </TableCell>
                                     <TableCell className="align-top py-4">
-                                        <p className="line-clamp-2 text-sm leading-relaxed text-foreground max-w-[500px]" title={item.content}>
-                                            {item.content}
-                                        </p>
+                                        <div className="max-h-[100px] overflow-y-auto pr-2 scrollbar-hide">
+                                            <p className="text-sm leading-relaxed text-foreground max-w-[500px]" title={item.content}>
+                                                {item.content}
+                                            </p>
+                                        </div>
                                     </TableCell>
                                     <TableCell className="align-top py-4 text-muted-foreground">
                                         {item.sentiment === "POSITIVE" && (
