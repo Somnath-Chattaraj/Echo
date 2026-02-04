@@ -58,7 +58,7 @@ export function Navbar({ projects, user }: NavbarProps) {
             <div className="flex h-16 items-center px-6 gap-4">
                 {/* Left: Logo & Project Switcher */}
                 <div className="flex items-center gap-4 min-w-[240px] dark:text-white">
-                    <Link href="/dashboard" className="flex items-center gap-2 font-bold text-lg tracking-tight hover:opacity-80 transition-opacity">
+                    <Link href="/" className="flex items-center gap-2 font-bold text-lg tracking-tight hover:opacity-80 transition-opacity">
                         <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
                             <LayoutGrid className="size-4" />
                         </div>

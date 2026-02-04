@@ -57,7 +57,7 @@ export function LandingHero() {
                         transition={{ duration: 0.5, delay: 0.3 }}
                         className="flex flex-wrap items-center gap-4"
                     >
-                        <Link href="/sign-up">
+                        <Link href="/dashboard">
                             <Button size="lg" className="h-12 px-8 rounded-full bg-white text-zinc-950 hover:bg-zinc-200 border-none font-semibold text-base relative overflow-hidden group">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -translate-x-full group-hover:animate-shimmer" />
                                 Get Started
