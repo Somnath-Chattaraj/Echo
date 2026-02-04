@@ -1,4 +1,11 @@
 # Echo
+[![GitHub release](https://img.shields.io/github/v/release/Somnath-Chattaraj/Echo)](https://github.com/Somnath-Chattaraj/Echo/releases/tag/Echo)
+[![GitHub issues](https://img.shields.io/github/issues/Somnath-Chattaraj/Echo)](https://github.com/Somnath-Chattaraj/Echo/issues)
+[![GitHub forks](https://img.shields.io/github/forks/Somnath-Chattaraj/Echo)](https://github.com/Somnath-Chattaraj/Echo/network)
+[![GitHub stars](https://img.shields.io/github/stars/Somnath-Chattaraj/Echo)](https://github.com/Somnath-Chattaraj/Echo/stargazers)
+[![License: Royalty License](https://img.shields.io/badge/License-Royalty-blue)](https://github.com/Somnath-Chattaraj/Echo/blob/master/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
+[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 **Feedback as a Service.**
 Collect, manage, and analyze user feedback effortlessly with a powerful dashboard and an embeddable widget.
