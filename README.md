@@ -3,7 +3,8 @@
 **Feedback as a Service.**
 Collect, manage, and analyze user feedback effortlessly with a powerful dashboard and an embeddable widget.
 
-![Echo Banner](https://placehold.co/1200x400/18181b/ffffff?text=Echo+Dashboard)
+<img width="1407" height="804" alt="image" src="https://github.com/user-attachments/assets/939f39ad-5db3-48f5-be60-af9c6e402005" />
+
 
 ## 🚀 Features
 
