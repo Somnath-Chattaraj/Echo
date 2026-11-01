@@ -16,13 +16,18 @@ const GoogleOAuthButton = (
         try {
             setLoading(true);
             setError(null);
-            await authClient.signIn.social({
+            const { error: authError } = await authClient.signIn.social({
                 provider: "google",
                 callbackURL: "/dashboard",
             });
+            if (authError) {
+                setError(authError.message || "Unable to sign in with Google");
+            }
         } catch (err) {
             console.error("Google sign up error:", err);
             setError("Failed to sign up with Google");
+        } finally {
+            setLoading(false);
         }
     };
 

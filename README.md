@@ -24,7 +24,7 @@ Collect, manage, and analyze user feedback effortlessly with a powerful dashboar
 
 ## 🛠 Tech Stack
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
 - **Database**: PostgreSQL (via [Prisma ORM](https://www.prisma.io/))
 - **Auth**: [Better Auth](https://github.com/better-auth/better-auth)
 - **Styling**: Tailwind CSS & Shadcn UI
@@ -33,7 +33,7 @@ Collect, manage, and analyze user feedback effortlessly with a powerful dashboar
 ## 📦 Getting Started
 
 ### Prerequisites
-- Node.js (v18+)
+- Node.js 22.18+
 - PostgreSQL Database
 - pnpm (recommended)
 
@@ -41,8 +41,8 @@ Collect, manage, and analyze user feedback effortlessly with a powerful dashboar
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/echo.git
-   cd echo
+   git clone https://github.com/Somnath-Chattaraj/Echo.git
+   cd Echo
    ```
 
 2. **Install dependencies**
@@ -78,7 +78,7 @@ Collect, manage, and analyze user feedback effortlessly with a powerful dashboar
 Add this script to your website's `<head>` or `<body>`:
 
 ```html
-<script src="https://echo.yourdomain.com/embed/YOUR_PROJECT_KEY"></script>
+<script src="https://echo.somnathc.xyz/embed/YOUR_PROJECT_KEY"></script>
 ```
 
 Replace `YOUR_PROJECT_KEY` with the key found in your project settings.
@@ -89,3 +89,7 @@ See [docs/architecture.md](docs/architecture.md) for system architecture.
 
 ## 📜 License
 This project is licensed under the MIT License.
+
+## Production domain and authentication
+
+Echo is hosted at https://echo.somnathc.xyz. Set Vercel Production `BETTER_AUTH_URL=https://echo.somnathc.xyz`, register `https://echo.somnathc.xyz/api/auth/callback/google` on the Google OAuth client, then redeploy. See [the domain migration guide](docs/domain-migration.md) for the confirmed 403 cause, provider settings, and regression tests. Copy `.env.example` for local configuration.

@@ -13,9 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { GithubLogo, GoogleLogo, EnvelopeSimple, LockKey } from "@phosphor-icons/react";
+import { EnvelopeSimple, LockKey } from "@phosphor-icons/react";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import GoogleOAuthButton from "@/components/auth/google-oauth-button";
 import { Tiles } from "@/components/ui/tiles";
@@ -24,33 +24,12 @@ import { Tiles } from "@/components/ui/tiles";
 
 
 
-async function handleSignIn() {
-  console.log("Sign In");
-}
-
 export default function SignInPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  const handleGoogleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/dashboard",
-      })
-    } catch (err) {
-      console.error("Google sign up error:", err);
-      setError("Failed to sign up with Google");
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,11 +37,17 @@ export default function SignInPage() {
     setError(null);
 
     try {
-      await authClient.signIn.email({
+      const { error: authError } = await authClient.signIn.email({
         email,
         password,
         callbackURL: "/dashboard",
-      })
+      });
+      if (authError) {
+        setError(authError.message || "Unable to sign in");
+        return;
+      }
+      router.push("/dashboard");
+      router.refresh();
     } catch (err) {
       console.error("Email sign in error:", err);
       setError("Failed to sign in with email");
@@ -113,6 +98,9 @@ export default function SignInPage() {
                   <EnvelopeSimple className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <Input
                     id="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    autoComplete="email"
                     type="email"
                     placeholder="m@example.com"
                     className="pl-9 bg-background/50 border-input focus:border-primary/50 focus:ring-primary/20 transition-all font-medium"
@@ -131,6 +119,9 @@ export default function SignInPage() {
                   <LockKey className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <Input
                     id="password"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                    autoComplete="current-password"
                     placeholder="••••••••"
                     type="password"
                     className="pl-9 bg-background/50 border-input focus:border-primary/50 focus:ring-primary/20 transition-all font-medium"
@@ -138,8 +129,8 @@ export default function SignInPage() {
                   />
                 </div>
               </div>
-              <Button type="submit" className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/20 transition-all duration-300">
-                Sign in with Email
+              <Button type="submit" disabled={loading} className="w-full bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-primary/20 transition-all duration-300">
+                {loading ? "Signing in..." : "Sign in with Email"}
               </Button>
             </form>
           </CardContent>
